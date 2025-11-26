@@ -1,0 +1,42 @@
+<!doctype html>
+button{padding:8px 14px;border:0;border-radius:6px;cursor:pointer;margin-right:8px}
+</style>
+</head>
+<body>
+<header>
+<div>送信記録</div>
+<nav>
+<a href="index.html">詐欺体験ページ</a>
+<a href="explain.html">解説ページ</a>
+</nav>
+</header>
+
+
+<main>
+<button id="reload">再読み込み</button>
+<button id="clear">履歴削除</button>
+<div id="area"></div>
+</main>
+
+
+<script>
+const SKEY='scam_demo_records_v2';
+function load(){return JSON.parse(localStorage.getItem(SKEY)||'[]')};
+
+
+function render(){
+const data=load();
+const area=document.getElementById('area');
+if(data.length===0){area.innerHTML='<p>記録はまだありません</p>';return}
+let h='<table><tr><th>日時</th><th>名前</th><th>メール</th><th>電話</th><th>住所</th></tr>';
+for(const r of data){h+=`<tr><td>${r.time}</td><td>${r.name}</td><td>${r.mail}</td><td>${r.tel}</td><td>${r.addr}</td></tr>`}
+h+='</table>'; area.innerHTML=h;
+}
+
+
+render();
+document.getElementById('reload').onclick=render;
+document.getElementById('clear').onclick=()=>{if(confirm('削除する？')){localStorage.removeItem(SKEY);render()}};
+</script>
+</body>
+</html>
